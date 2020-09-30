@@ -24,22 +24,16 @@ If user guesses all words
 
 /*----- app's state (variables) -----*/
 const words = '';
-// const letterBank = [];
+
 const gameTime = 60;
 let level = 1;
 
 const letterBank = [
     {level: 1,
-    letters: "erareus",
-    words: ['erasure', 'eraser', 'searer', 'erase', 'rears','reuse', 'rares','reuse','saree','surer']}
-]
-
-// const wordLvl1 = "pilafwe".split('');
-// const wordsLvl1 = []
-// console.log(wordLvl1);
-
-// const worldLvl2 = "linkage".split('');
-
+        letters: "erareus",
+        words: ['erasure', 'eraser', 'searer', 'erase', 'rears','reuse', 'rares','reuse','saree','surer']}
+    ]
+    
 
 
 /*----- cached element references -----*/
@@ -69,38 +63,59 @@ $('#guesses').keypress(function(e) {
 -   create guesses form
 */
 
-// Get letters
-let getLevelLetters = function(level) {
-    let levelLetters = letterBank[level - 1].letters.split('');
-    return levelLetters;
-};
-
 // Shuffle Array
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
-}
+};
 
+// Get letters
+let getLevelLetters = function(level) {
+    let levelLetters = letterBank[level - 1].letters.split('');
+    return levelLetters;
+};
+
+// Get words
+    // - shuffle word array
+    // - choose first six words in shuffled array
+let getLevelWords = function(level) {
+    return letterBank[level - 1].words;
+};
+
+
+
+// Initialize
 const initialize = function() {
     level = 1;
 
 //  Get letters for bank
-    let lettersInBank = getLevelLetters(level);
-    
+let lettersInBank = getLevelLetters(level);
+
 //  Shuffle letters
     shuffleArray(lettersInBank);
 
 //  Press Start
     $('#start-game').click(function(e) {
-    // Start timer countdown
+        // Start timer countdown
 
-    // Populate letter bank
+        // Populate letter bank
 
-    // Create guesses forms
+        // Create guesses forms
+        let levelWords = getLevelWords(level);
+        console.log('levelWords', levelWords);
+        
+        // let levelWordsShuffled = shuffleArray(levelWords);
+        // console.log(levelWordsShuffled);
 
-    
+        // Grab first 6 words
+        for (i = 0, i < 6, i++) {
+            // create six "guesses-form"
+            let currentWord = levelWords[i];
+            
+            // in each guesses form, create aria-label to equal # of letters in word
+        }
     });
 
 };
