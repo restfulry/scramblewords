@@ -109,13 +109,45 @@ let lettersInBank = getLevelLetters(level);
         // let levelWordsShuffled = shuffleArray(levelWords);
         // console.log(levelWordsShuffled);
 
+
+        // while - choose random index six times
+        // return array of six words from levelWords
+        // push to new array if != previous word/index
+
+        // RENDER GUESSES FORMS
         // Grab first 6 words
-        for (i = 0, i < 6, i++) {
+        for (i = 0; i < 6; i++) {
             // create six "guesses-form"
             let currentWord = levelWords[i];
-            
-            // in each guesses form, create aria-label to equal # of letters in word
+            console.log(currentWord.length);
+            // turn current word string into an array
+            // create an array of inputs for each letter
+            // joiin the array of all the inputs into one string
+            const $newGuessForm = $(`
+                <br>    
+                <div class="input-group" id="guesses-form">
+                <div class="input-group-prepend">
+                <span class="input-group-text">Word ${i+1}</span>
+                </div>
+                ${
+                    currentWord.split('').map(function(letter){
+                        return `<input type="text" aria-label="letter ${i+1}" class="form-control">`
+                    }).join(' ')
+                }
+                <br>
+            `)
+            $('.card-group > .card > #guesses').append($newGuessForm);
         }
+
+        // display level letters
+        lettersInBank.forEach(function(letter) {
+            let $letterToDisplay = (`
+                <div class="letter">${letter.toUpperCase()}</div>
+            `)
+            $('.card > .card-body > #letter-bank').append($letterToDisplay);
+        });
+
+        
     });
 
 };
