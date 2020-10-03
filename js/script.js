@@ -205,12 +205,8 @@ $('#start-game').click(function(e) {
     };
     
     // CHECK IF ALL LETTER BOXES ARE FILLED
-    const allLettersFilled = function(input){
-         if(input.length === guessedWord.length){
-             return true
-         } else {
-             return false;
-         };
+    const allLettersFilled = function(guess){
+         return guess.length === guessedWord.length;
     }; 
 
     // JOIN USER INPUT LETTERS INTO WORD STRING
