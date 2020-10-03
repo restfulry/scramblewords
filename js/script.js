@@ -24,8 +24,9 @@ If user guesses all words
 
 /*----- app's state (variables) -----*/
 const words = '';
-const userGuesses = [];
+const userKeyInputs = [];
 let guessedWord = '';
+const userGuesses = [];
 
 const gameTime = 60;
 let level;
@@ -35,7 +36,7 @@ let level;
 const letterBank = [
     {level: 1,
         letters: "erareus",
-        words: ['erasure', 'eraser', 'searer', 'erase', 'rears','reuse', 'rares','reuse','saree','surer']}
+        words: ['erasure', 'eraser', 'searer', 'erase', 'rears','reuse', 'rares','reuse','saree','surer', 'assure', 'erases']}
     ]
     
 let lettersInBank;
@@ -115,7 +116,7 @@ $('#start-game').click(function(e) {
         // joiin the array of all the inputs into one string
         const $newGuessForm = $(`
             <br>    
-            <div class="input-group" id="guesses-form-${i+1}">
+            <div class="input-group guesses-form" id="guesses-form-${i+1}">
             <div class="input-group-prepend">
             <span class="input-group-text">Word ${i+1}</span>
             </div>
@@ -145,7 +146,7 @@ $('#start-game').click(function(e) {
     const checkForValidInput = function(userChoice) {
         if(lettersInBank.includes(userChoice)){
             return true;
-        } else if(userGuesses.includes(userChoice)) {
+        } else if(userKeyInputs.includes(userChoice)) {
             return false;
         } else {
             return false;
@@ -158,41 +159,50 @@ $('#start-game').click(function(e) {
         if(!checkForValidInput(userChoice)){
             e.preventDefault();
         };
-        userGuesses.push(userChoice);
-        return userGuesses;
+        userKeyInputs.push(userChoice);
+        return userKeyInputs;
     });
+
     // WIN CONDITIONS
-    let $guessedLetter = $('#guesses > #guesses-form-1 > .letters > input');
-    let $btnSubmitWord = $('#guesses > #guesses-form-1 > button');
-    
+    let $btnSubmitWord = $('#guesses > .guesses-form > button');
+
     
     //JOIN USER INPUT LETTERS INTO WORD STRING
-    const joinLetters = function() {
-        $guessedLetter.each(function() {
+    const joinLetters = function($guessedLetters) {
+        $guessedLetters.each(function() {
             guessedWord += this.value;
-            return guessedWord;
-        })
+        });
+        userGuesses.push(guessedWord);
+        console.log(userGuesses);
     };
     
     // SUBMIT WORD BUTTON
     $btnSubmitWord.click(function(e) {
-        joinLetters();
-        checkCorrectWord();
+        let $guessedLetters = $(this).siblings('.letters').children();
+        joinLetters($guessedLetters);
+        
+        console.log('guessed',wordGuessedAlready());
+        
+        if(checkCorrectWord() && !wordGuessedAlready()){
+            $(this).css("background-color", "#90ee90");
+            $(this).prop('disabled', true);
+            $guessedLetters.prop('disabled', true);
+            guessedWord = '';
+        } else {
+            guessedWord = '';
+        }
     });
     
     // CHECK IF WORD IS CORRECT
-    const checkCorrectWord = function() {
-        levelWords.find(function(word) {
-            if(word === guessedWord){
-                console.log('hooray');
-                $guessedLetter.prop('disabled', true);
-                $guessedLetter.css("background-color", "green");
-            } else {
-                console.log('try again')
-            }
+    function checkCorrectWord() {
+        return levelWords.find(function(word) {
+            return word === guessedWord;
         });
     };
-    
+
+    function wordGuessedAlready() {
+        
+    }
 });
 
 
