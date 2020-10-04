@@ -23,7 +23,7 @@ If user guesses all words
 
 
 /*----- app's state (variables) -----*/
-const gameTime = 60;
+let gameTime = 60000;
 let level;
 
 const words = '';
@@ -38,6 +38,12 @@ const letterBank = [
     ]
     
 let lettersInBank;
+
+// Timer
+let timerRunning = false;
+let currentTimer = 0;
+let runTimer;
+let $time = $('.card > .card-body > #clock');
 
 /*----- cached element references -----*/
 
@@ -76,51 +82,49 @@ let getLevelLetters = function(level) {
 };
 
 // Get words
-    // - shuffle word array
-    // - choose first six words in shuffled array
 let getLevelWords = function(level) {
     return letterBank[level - 1].words;
 };
 
-function outOfTime(){
-    $('#guesses').prop('disabled', true);
-    alert('time out');
-};
 
 function disableStartBtn() {
     $('#start-game').prop('disabled', true);
 };
 
-// class Timer{
-//     constructor() {
-//         this.isRunning = false;
-//         this.currentTimer = 0;
-//         this.runTimer;
-//         this.time = $('#clock');
-//     }
-// }
+function initializeTimer() {
+    timerRunning = false;
+    currentTimer = gameTime/1000;
+    runTimer;
+    gameTime = 60000;
+};
 
-// function startTimer(){
-//     if(!this.isRunning){
-//         this.isRunning = true;
-//         this.runTimer = setInterval(
-//             ()=>{this.time.innerHTML = ++this.currentTimer;
-//         }, 1000);
-//     }
-// };
+function outOfTime(){
+    $('#guesses').prop('disabled', true);
+    alert('out of time');
+};
 
-// function stopTimer(){
-//     if(this.isRunning){
-//         clearInterval(this.runTimer);
-//         this.isRunning = false;
-//     }
-// };
+function startTimer() {
+    if(!timerRunning){
+        timerRunning = true;
+        runTimer = setInterval(() => {
+            $time.html(currentTimer--);
+        }, 1000);
+    }
+};
 
+function stopTimer() {
+    if(timerRunning){
+        clearInterval(runTimer);
+        timerRunning = false;
+        outOfTime();
+    }
+};
 
 
 // Initialize
 const initialize = function() {
     level = 1;
+    initializeTimer();
     //  Get letters for bank, shuffle, and return
     lettersInBank = getLevelLetters(level);
     shuffleArray(lettersInBank);
@@ -128,19 +132,12 @@ const initialize = function() {
 
 //  PRESS START
 $('#start-game').click(function(e) {
-    let levelWords = getLevelWords(level);
-    let $timeDisplay = $('#clock');
-    disableStartBtn();
-    
     // Start timer countdown
-    // const newGameTimer = new Timer();
+    startTimer();
+    setTimeout(stopTimer, gameTime);
+    disableStartBtn();
 
-    // newGameTimer.startTimer();
-    // setTimeout(
-    //     function(){
-    //         newGameTimer.stop();
-    //     }, gameTime
-    // );
+    let levelWords = getLevelWords(level);
 
     // RENDER GUESS FORMS
     for (i = 0; i < 6; i++) {
