@@ -23,7 +23,7 @@ If user guesses all words
 
 
 /*----- app's state (variables) -----*/
-let gameTime = 60000;
+let gameTime = 0;
 let level;
 
 const words = '';
@@ -93,14 +93,21 @@ function disableStartBtn() {
 
 function initializeTimer() {
     timerRunning = false;
+    gameTime = 6000;
     currentTimer = gameTime/1000;
     runTimer;
-    gameTime = 60000;
 };
 
 function outOfTime(){
+    const $btnNewGame = $(`
+        <div class="col-sm">
+            <button type="button" class="btn btn-danger">New Game</button>
+        </div>
+    `);
     $('#guesses').prop('disabled', true);
-    alert('out of time');
+    $('#start-game').remove();
+    $('#buttons').append($btnNewGame);
+    // alert('out of time');
 };
 
 function startTimer() {
