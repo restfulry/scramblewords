@@ -23,7 +23,7 @@ If user guesses all words
 
 
 /*----- app's state (variables) -----*/
-let gameTime = 30000;
+let gameTime = 90000;
 let level = 0;
 
 let words = '';
@@ -40,8 +40,32 @@ const letterBank = [
         letters: "erareus",
         words: ['erasure', 'eraser', 'searer', 'erase', 'rears','reuse', 'rares','reuse','saree','surer', 'assure', 'erases']},
     {   level: 2,
-        letters: "testest",
-        words: ['erasure', 'eraser', 'searer', 'erase', 'rears','reuse', 'rares','reuse','saree','surer', 'assure', 'erases']} 
+        letters: "powder",
+        words: ['powder', 'doper', 'dower', 'pored', 'power','roped', 'rowed']},
+    {   level: 3,
+        letters: "clswoer",
+        words: ['scowler', 'ceorls', 'closer', 'cowers', 'cresol','escrow', 'lowers','slower','close','cores', 'corse', 'cower','cowls','crews','loser','lower','crows','roles','score','scowl','screw','sorel','sower','swore','worse']},
+    {   level: 4,
+        letters: "yrednaw",
+        words: ['wander', 'warden', 'warned', 'yarned', 'yawned','yawner', 'awned','deary','deray','drawn', 'nerdy', 'rayed','ready','wader','waned','wared','weary','yawed','yearn']},
+    {   level: 5,
+        letters: "abridge",
+        words: ['abridge', 'brigade', 'abider', 'badger', 'barged','bridge', 'garbed','abide','aider','aired', 'badge', 'bared','barge','beard','braid','bread','bride','debag','dirge','gibed','grade','rabid','raged','rebid','ridge']},
+    {   level: 6,
+        letters: "delator",
+        words: ['leotard', 'loader', 'orated', 'ordeal', 'reload','retold', 'adore','alder','alert','alter', 'dater', 'dealt','delta','derat','dotal','lader','doter','lated','later','oared','oater','older','orate','rated','tared','trade','tread']},
+    {   level: 7,
+        letters: "rdiigns",
+        words: ['ridings', 'grinds', 'indris', 'riding', 'rising','siding', 'siring','dings','girds','grids', 'grind', 'grins','rigid','rinds','rings']},
+    {   level: 8,
+        letters: "rotauqe",
+        words: ['equator', 'oater', 'quoter', 'orate', 'torque','outer', 'quart','quate','quart','quota', 'quote', 'route','toque']},
+    {   level: 9,
+        letters: "sretarg",
+        words: ['graters', 'garters', 'arrest', 'garter', 'gaters','grater', 'grates','greats','rarest','raster', 'raters', 'raters','retags','stager']},
+    {   level: 10,
+        letters: "namsrao",
+        words: ['oarsman', 'aromas', 'manors', 'ransom', 'aroma','arson', 'manor','manos','mason','moans', 'moras', 'norms','roams','sonar']}         
     ]
     
 // Timer
