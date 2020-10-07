@@ -1,0 +1,34 @@
+body {
+    margin: 0;
+    background-color: #fde8e9;
+}
+
+.jumbotron {
+    background-color: #fde8e9;
+}
+
+h1 {
+    font-family: 'Indie Flower', cursive;
+    color: #1f2232;
+}
+
+p {
+    color: #596475;
+}
+
+.card-group > .card > #guesses {
+    background-color: #bc9ec1;
+}
+
+.card-group > .card > #right-panel {
+    background-color: #e3bac6;
+}
+
+#letter-bank {
+    font-size: 3rem;
+}
+
+#clock {
+    font-size: 3rem;
+    color: red;
+}

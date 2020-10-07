@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scramblewords</title>
-
+    
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-
+    
+    <!-- Font Import -->
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -19,19 +25,16 @@
     <div class="container">
         
         <div class="jumbotron jumbotron-fluid">
-            <div class="container">
-                <h1 class="display-4 text-center">Scramblewords</h1>
+            <div class="container-fluid">
+                <h1 class="display-1 text-center">Scramblewords</h1>
                 <p class="lead text-center">Make words using the letters provided. Find them all before the time ends!</p>
             </div>
         </div>
 
         <div class="row" id="buttons">
             <div class="col-sm" id="start-button-div">
-                <button type="button" class="btn btn-success" id ="start-game">Start</button>
+                <button type="button" class="btn btn-success" id="start-game">Start</button>
             </div>
-            <!-- <div class="col-sm">
-                <button type="button" class="btn btn-danger">New Game</button>
-            </div> -->
         </div>
 
           <div class="card-group">
@@ -60,10 +63,14 @@
               </div>
 
               <div class="card">
-                <div class="card-body">
-                    <div class="card-title" id="clock">Clock</div>
-                    <div class="card-title" id="letter-bank">
-                        <h4>Letter Bank</h4>
+                <div class="card-body" id="right-panel">
+                    <h4 class="text-center">Time Remaining</h4>
+                    <div class="card-title text-center" id="clock">
+                        00
+                    </div>
+                    <h4 class="text-center">Letter Bank</h4>
+                    <div class="card-title text-center" id="letter-bank">
+                        _ _ _ _ _ _ _
                     </div>
                 </div>
             </div>

@@ -23,22 +23,27 @@ If user guesses all words
 
 
 /*----- app's state (variables) -----*/
-let gameTime = 0;
-let level;
+let gameTime = 30000;
+let level = 0;
 
-const words = '';
-const userKeyInputs = [];
+let words = '';
 let guessedWord = '';
-const userGuesses = [];
+let userKeyInputs = [];
+let userGuesses = [];
+let numCorrectWords = 0;
 
-const letterBank = [
-    {level: 1,
-        letters: "erareus",
-        words: ['erasure', 'eraser', 'searer', 'erase', 'rears','reuse', 'rares','reuse','saree','surer', 'assure', 'erases']}
-    ]
-    
+let levelWords = [];
 let lettersInBank;
 
+const letterBank = [
+    {   level: 1,
+        letters: "erareus",
+        words: ['erasure', 'eraser', 'searer', 'erase', 'rears','reuse', 'rares','reuse','saree','surer', 'assure', 'erases']},
+    {   level: 2,
+        letters: "testest",
+        words: ['erasure', 'eraser', 'searer', 'erase', 'rears','reuse', 'rares','reuse','saree','surer', 'assure', 'erases']} 
+    ]
+    
 // Timer
 let timerRunning = false;
 let currentTimer = 0;
@@ -76,16 +81,28 @@ function shuffleArray(array) {
 };
 
 // Get letters
-let getLevelLetters = function(level) {
+function getLevelLetters(level) {
     let levelLetters = letterBank[level - 1].letters.split('');
     return levelLetters;
 };
 
 // Get words
-let getLevelWords = function(level) {
+function getLevelWords(level) {
     return letterBank[level - 1].words;
 };
 
+function startBtnToNewGameBtn(){
+    $('#start-game').prop('disabled', true);
+    $('#start-game').removeClass("btn-success");
+    $('#start-game').addClass("btn-danger");
+};
+
+function newGameBtnToStartBtn(){
+    $('#start-game').removeClass("btn-danger");
+    $('#start-game').addClass("btn-success");
+    $('#start-game').html('New Game');
+    $('#start-game').prop('disabled', false);
+}
 
 function disableStartBtn() {
     $('#start-game').prop('disabled', true);
@@ -93,21 +110,20 @@ function disableStartBtn() {
 
 function initializeTimer() {
     timerRunning = false;
-    gameTime = 6000;
+    gameTime;
     currentTimer = gameTime/1000;
     runTimer;
+    $time.html(`${currentTimer}`);
 };
 
 function outOfTime(){
     const $btnNewGame = $(`
         <div class="col-sm">
-            <button type="button" class="btn btn-danger">New Game</button>
+            <button type="button" class="btn btn-danger" id="new-game">New Game</button>
         </div>
     `);
-    $('#guesses').prop('disabled', true);
-    $('#start-game').remove();
-    $('#buttons').append($btnNewGame);
-    // alert('out of time');
+    $('#guesses :input').prop('disabled', true);
+    newGameBtnToStartBtn();
 };
 
 function startTimer() {
@@ -123,28 +139,52 @@ function stopTimer() {
     if(timerRunning){
         clearInterval(runTimer);
         timerRunning = false;
-        outOfTime();
     }
 };
 
+function loseLevel() {
+    stopTimer();
+    outOfTime();
+}
 
-// Initialize
-const initialize = function() {
-    level = 1;
-    initializeTimer();
-    //  Get letters for bank, shuffle, and return
+function winLevel() {
+    stopTimer();
+
+};
+
+function resetUiInputs() {
+    $('.card > .card-body > #letter-bank').empty();
+    $('.card-group > .card > #guesses').empty();
+    $('#guesses :input').prop('disabled', false);
+}
+
+
+/*----- initialization -----*/
+
+// Initialize Function
+function initialize() {
+    level += 1;
+    words = '';
+    userKeyInputs = [];
+    guessedWord = '';
+    userGuesses = [];
+    numCorrectWords = 0;
+    timerRunning = false;
     lettersInBank = getLevelLetters(level);
+    levelWords = getLevelWords(level);
+
+    initializeTimer();
+    resetUiInputs();
     shuffleArray(lettersInBank);
 };
 
 //  PRESS START
 $('#start-game').click(function(e) {
-    // Start timer countdown
+    initialize();
     startTimer();
-    setTimeout(stopTimer, gameTime);
-    disableStartBtn();
+    setTimeout(loseLevel, gameTime);
+    startBtnToNewGameBtn();
 
-    let levelWords = getLevelWords(level);
 
     // RENDER GUESS FORMS
     for (i = 0; i < 6; i++) {
@@ -178,7 +218,7 @@ $('#start-game').click(function(e) {
     });
 
     // Check for valid input
-    const checkForValidInput = function(userChoice) {
+    function checkForValidInput(userChoice) {
         if(lettersInBank.includes(userChoice)){
             return true;
         } else if(userKeyInputs.includes(userChoice)) {
@@ -209,12 +249,12 @@ $('#start-game').click(function(e) {
     };
     
     // CHECK IF ALL LETTER BOXES ARE FILLED
-    const allLettersFilled = function(guess){
+    function allLettersFilled(guess){
          return guess.length === guessedWord.length;
     }; 
 
     // JOIN USER INPUT LETTERS INTO WORD STRING
-    const joinLetters = function($guessedLetters) {
+    function joinLetters($guessedLetters) {
         $guessedLetters.each(function() {
             guessedWord += this.value;
         });
@@ -236,20 +276,14 @@ $('#start-game').click(function(e) {
             $guessedLetters.css("background-color", "#90ee90");
             userGuesses.push(guessedWord);
             guessedWord = '';
+            numCorrectWords += 1;
         } else {
             $guessedLetters.css("background-color", "#ffa07a");
             guessedWord = '';
         }
+
+        if (numCorrectWords === 6){
+            winLevel();
+        }
     });
 });
-
-
-// function nextLevel() {
-//     .value = ''
-//      level = level++;
-// }
-
-
-
-/*----- initialization -----*/
-initialize();
