@@ -1,29 +1,5 @@
-/* Flow
-
-Wait for user to click start
-Initialize
-    Letter bank populates, empty word guess boxes appear, timer starts counting down
-User clicks guess box
-Useer types word guess
-    If guess === word from word bank, one correct
-    If guess !== word from word bank
-        error msg
-        clear guess in box
-If timer ends before all correct guesses, no more guesses allowed
-    Show lose msg
-    Show next level btn
-    Wait for user to click next level
-        Re initialize
-If user guesses all words
-    Show win msg
-    Show next level btn
-    Wait for user to click next level
-        Re-initialize
-*/
-
-
 /*----- app's state (variables) -----*/
-let gameTime = 90000;
+let gameTime = 180000;
 let level = 0;
 
 let words = '';
@@ -38,7 +14,7 @@ let lettersInBank;
 const letterBank = [
     {   level: 1,
         letters: "erareus",
-        words: ['erasure', 'eraser', 'searer', 'erase', 'rears','reuse', 'rares','reuse','saree','surer', 'assure', 'erases']},
+        words: ['erasure', 'eraser', 'searer', 'erase', 'rears','reuse', 'rares','saree','surer', 'erases']},
     {   level: 2,
         letters: "powder",
         words: ['powder', 'doper', 'dower', 'pored', 'power','roped', 'rowed']},
@@ -72,30 +48,11 @@ const letterBank = [
 let timerRunning = false;
 let currentTimer = 0;
 let runTimer;
-let $time = $('.card > .card-body > #clock');
 
 /*----- cached element references -----*/
-
-
-
-/*----- event listeners -----*/
-//  Wait for user to click start
-
+let $time = $('.card > .card-body > .card-title > #clock');
 
 /*----- functions -----*/
-
-/* to INITIALIZE:
--   choose level letters
--   populate letter bank
--   create guesses forms
-
--   after win/loss is met
--   show next level button
--   choose level letters
--   populate letter bank
--   create guesses form
-*/
-
 // Shuffle Array
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -113,6 +70,86 @@ function getLevelLetters(level) {
 // Get words
 function getLevelWords(level) {
     return letterBank[level - 1].words;
+};
+
+function renderInitialUi() {
+    const $guesses = $(`<div class="card-title">Guesses</div>`);
+    const $timeRemaining = $(`<h4 class="text-center">Time Remaining</h4>`);
+    const $letterBank = $(`<h4 class="text-center">Letter Bank</h4>`);
+
+    $('.card-group > .card > #guesses').append($guesses);
+    $('.card-group > .card > #right-panel > .clock').append($timeRemaining);
+    $time.html('00');
+    $('.card-group > .card > #right-panel > #letter-bank').append($letterBank);
+    $('.card-group > .card > #right-panel > #letter-bank').css('background-color', '#e3bac6');
+    $('.card-group > .card > #right-panel > .clock').css('background-color', '#edeec0');
+    $('.card-group > .card > #guesses').css('background-color', '#bc9ec1');
+}
+
+function renderGuessForms(){
+    for (i = 0; i < 6; i++) {
+     let randomIndex = Math.floor(Math.random() * levelWords.length);
+     let currentWord = levelWords[randomIndex];
+     const $newGuessForm = $(`
+         <br>    
+         <div class="input-group guesses-form" id="guesses-form-${i+1}">
+         <div class="input-group-prepend">
+         <span class="input-group-text">Word ${i+1}</span>
+         </div>
+         <div class="input-group letters">
+         ${
+             currentWord.split('').map(function(letter, idx){
+                 return `<input type="text" aria-label="letter-${idx+1}" class="form-control ${idx+1}" maxlength="1">`
+             }).join(' ')
+         }
+         </div>
+         <button type="button" class="btn btn-warning">Submit Word</button>
+         <br>
+     `)
+     $('.card-group > .card > #guesses').append($newGuessForm);
+ }
+};
+
+function renderLevelLetters(){
+    lettersInBank.forEach(function(letter) {
+        let $letterToDisplay = (`
+            <div class="letter">${letter.toUpperCase()}</div>
+        `)
+        $('.card > .card-body > #letter-bank').append($letterToDisplay);
+    });
+};
+
+
+// CHECK IF WORD IS IN WORD BANK
+function checkCorrectWord() {
+    return levelWords.includes(guessedWord);
+};
+
+// CHECK IF WORD NOT ALREADY GUESSED
+function wordNotAlreadyGuessed() {
+    return !userGuesses.includes(guessedWord);
+};
+
+// CHECK IF ALL LETTER BOXES ARE FILLED
+function allLettersFilled(guess){
+        return guess.length === guessedWord.length;
+}; 
+
+// JOIN USER INPUT LETTERS INTO WORD STRING
+function joinLetters($guessedLetters) {
+    $guessedLetters.each(function() {
+        guessedWord += this.value;
+    });
+};
+
+function checkForValidInput(userChoice) {
+    if(lettersInBank.includes(userChoice)){
+        return true;
+    } else if(userKeyInputs.includes(userChoice)) {
+        return false;
+    } else {
+        return false;
+    }
 };
 
 function startBtnToNewGameBtn(){
@@ -147,6 +184,7 @@ function outOfTime(){
         </div>
     `);
     $('#guesses :input').prop('disabled', true);
+    $time.html('TIME OUT');
     newGameBtnToStartBtn();
 };
 
@@ -171,21 +209,25 @@ function loseLevel() {
     outOfTime();
 }
 
+function checkWin(){
+    if(numCorrectWords === 6) {
+        winLevel();
+    }
+};
+
 function winLevel() {
     stopTimer();
-
+    newGameBtnToStartBtn();
+    alert('So speedy! Congrats!');
 };
 
 function resetUiInputs() {
     $('.card > .card-body > #letter-bank').empty();
     $('.card-group > .card > #guesses').empty();
     $('#guesses :input').prop('disabled', false);
-}
-
+};
 
 /*----- initialization -----*/
-
-// Initialize Function
 function initialize() {
     level += 1;
     words = '';
@@ -202,55 +244,17 @@ function initialize() {
     shuffleArray(lettersInBank);
 };
 
+/*----- event listeners -----*/
+
 //  PRESS START
 $('#start-game').click(function(e) {
     initialize();
-    startTimer();
     setTimeout(loseLevel, gameTime);
+    startTimer();
+    renderInitialUi();
     startBtnToNewGameBtn();
-
-
-    // RENDER GUESS FORMS
-    for (i = 0; i < 6; i++) {
-        let randomIndex = Math.floor(Math.random() * levelWords.length);
-        let currentWord = levelWords[randomIndex];
-        const $newGuessForm = $(`
-            <br>    
-            <div class="input-group guesses-form" id="guesses-form-${i+1}">
-            <div class="input-group-prepend">
-            <span class="input-group-text">Word ${i+1}</span>
-            </div>
-            <div class="input-group letters">
-            ${
-                currentWord.split('').map(function(letter){
-                    return `<input type="text" aria-label="letter ${i+1}" class="form-control ${i+1}" maxlength="1">`
-                }).join(' ')
-            }
-            </div>
-            <button type="button" class="btn btn-warning">Submit Word</button>
-            <br>
-        `)
-        $('.card-group > .card > #guesses').append($newGuessForm);
-    }
-
-    // display level letters in bank
-    lettersInBank.forEach(function(letter) {
-        let $letterToDisplay = (`
-            <div class="letter">${letter.toUpperCase()}</div>
-        `)
-        $('.card > .card-body > #letter-bank').append($letterToDisplay);
-    });
-
-    // Check for valid input
-    function checkForValidInput(userChoice) {
-        if(lettersInBank.includes(userChoice)){
-            return true;
-        } else if(userKeyInputs.includes(userChoice)) {
-            return false;
-        } else {
-            return false;
-        }
-    };
+    renderGuessForms();
+    renderLevelLetters();
     
     // User input on keyboard
     $('#guesses').keypress(function(e){
@@ -259,41 +263,20 @@ $('#start-game').click(function(e) {
             e.preventDefault();
         };
         userKeyInputs.push(userChoice);
+        $(this).next().focus();
         return userKeyInputs;
     });
-
-    // CHECK IF WORD IS IN WORD BANK
-    function checkCorrectWord() {
-        return levelWords.includes(guessedWord);
-    };
     
-    // CHECK IF WORD NOT ALREADY GUESSED
-    function wordNotAlreadyGuessed() {
-        return !userGuesses.includes(guessedWord);
-    };
-    
-    // CHECK IF ALL LETTER BOXES ARE FILLED
-    function allLettersFilled(guess){
-         return guess.length === guessedWord.length;
-    }; 
-
-    // JOIN USER INPUT LETTERS INTO WORD STRING
-    function joinLetters($guessedLetters) {
-        $guessedLetters.each(function() {
-            guessedWord += this.value;
-        });
-    };
-
-    // Handler - Submit Word 
     let $btnSubmitWord = $('#guesses > .guesses-form > button');
     
     // SUBMIT WORD
     $btnSubmitWord.click(function(e) {
         let $guessedLetters = $(this).siblings('.letters').children();
-        
         joinLetters($guessedLetters);
+        
+        let wordIsValid = Boolean(checkCorrectWord() && wordNotAlreadyGuessed() && allLettersFilled($guessedLetters));
 
-        if(checkCorrectWord() && wordNotAlreadyGuessed() && allLettersFilled($guessedLetters)){
+        if(wordIsValid){
             $(this).css("background-color", "#90ee90");
             $(this).prop('disabled', true);
             $guessedLetters.prop('disabled', true);
@@ -306,8 +289,6 @@ $('#start-game').click(function(e) {
             guessedWord = '';
         }
 
-        if (numCorrectWords === 6){
-            winLevel();
-        }
+        checkWin();
     });
 });

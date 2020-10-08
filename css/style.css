@@ -1,10 +1,13 @@
 body {
     margin: 0;
-    background-color: #fde8e9;
+    background-color: #fde8e9;  
+    font-family: 'Open Sans', sans-serif;
 }
 
 .jumbotron {
     background-color: #fde8e9;
+    margin-bottom: 1px;
+    padding-bottom: 3px;
 }
 
 h1 {
@@ -12,16 +15,54 @@ h1 {
     color: #1f2232;
 }
 
+#buttons > #start-button-div > #start-game {
+    size: 100px;
+    margin-bottom: 25px;
+}
+
 p {
     color: #596475;
 }
 
+.card-group > .card {
+    border: none;
+}
+
 .card-group > .card > #guesses {
-    background-color: #bc9ec1;
+    background-color: #fde8e9;
+}
+
+.card-group > .card > #guesses > .card-title {
+    font-size: 3rem;
+}
+
+.card-group > .card > #guesses > .guesses-form > .input-group-prepend {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%; 
+    display: table-cell;
+}
+
+.card-group > .card > #guesses > .guesses-form > .input-group-prepend > .input-group-text {
+    text-align: justify;
+}
+
+.card-group > .card > #guesses > .guesses-form > .letters > input {
+    text-transform: uppercase;
+    text-align: center;
 }
 
 .card-group > .card > #right-panel {
-    background-color: #e3bac6;
+    background-color: #fde8e9;
+    padding-top: 0px;
+}
+
+.card-group > .card > #right-panel > .clock {
+    padding: 10px;
+}
+
+.card-group > .card > #right-panel > #letter-bank {
+    padding: 10px;
 }
 
 #letter-bank {
@@ -31,4 +72,9 @@ p {
 #clock {
     font-size: 3rem;
     color: red;
+}
+
+@keyframes appear {
+    0%  {opacity: 0;}
+    100% {opacity: 1;}
 }
