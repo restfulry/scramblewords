@@ -259,12 +259,14 @@ $('#start-game').click(function(e) {
     // User input on keyboard
     $('#guesses').keypress(function(e){
         const userChoice = e.key.toLowerCase();
-        if(!checkForValidInput(userChoice)){
+        const userInput = e.target
+        if(checkForValidInput(userChoice)){
+            $(userInput).next().focus();
+            userKeyInputs.push(userChoice);
+            return userKeyInputs;
+        } else {
             e.preventDefault();
         };
-        userKeyInputs.push(userChoice);
-        $(this).next().focus();
-        return userKeyInputs;
     });
     
     let $btnSubmitWord = $('#guesses > .guesses-form > button');

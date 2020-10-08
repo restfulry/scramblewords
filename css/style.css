@@ -7,17 +7,21 @@ body {
 .jumbotron {
     background-color: #fde8e9;
     margin-bottom: 1px;
-    padding-bottom: 3px;
+    padding-bottom: 2px;
 }
 
 h1 {
     font-family: 'Indie Flower', cursive;
     color: #1f2232;
+    margin-bottom: -10px;
 }
 
 #buttons > #start-button-div > #start-game {
-    size: 100px;
     margin-bottom: 25px;
+    padding: 10px 20px;
+    font-size: 3rem;
+    border-radius: 30px;
+    width:100%;
 }
 
 p {
@@ -33,7 +37,8 @@ p {
 }
 
 .card-group > .card > #guesses > .card-title {
-    font-size: 3rem;
+    font-size: 2rem;
+    text-align: center;
 }
 
 .card-group > .card > #guesses > .guesses-form > .input-group-prepend {
