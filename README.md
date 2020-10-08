@@ -25,6 +25,6 @@ Submit six correct words before time runs out!
 If you win the level, press _New Game_ to go to the next.
 
 ## Planned Features
-* Add new levels
+* Add new levels and verify words via online dictionary
 * Save level progress
 * Randomize levels
