@@ -1,10 +1,10 @@
 # Scramblewords
-## [Play Now](https://ryanjjlee.github.io/scramblewords/)
 A game of vocabularly and quick thinking. Make six words from the letters given to you before the time runs out! Can you make it through all 10 rounds?
-
+## [Play Now](https://ryanjjlee.github.io/scramblewords/)
 
 ## Screenshots
-
+![home screen](screenshots/scramblewords_startpage.png)
+![in game](screenshots/scramblewords_ingame.png)
 
 ## Technologies Used
 * HTML & Bootstrap
