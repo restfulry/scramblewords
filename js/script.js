@@ -49,8 +49,15 @@ let timerRunning = false;
 let currentTimer = 0;
 let runTimer;
 
+
+
+
 /*----- cached element references -----*/
 let $time = $('.card > .card-body > .card-title > #clock');
+let winMsg = $(`<div class="win-msg text-center">YOU WIN</div>`);
+let loseMsg = $(`<div class="lose-msg text-center">YOU LOSE :(</div>`);
+
+
 
 /*----- functions -----*/
 // Shuffle Array
@@ -119,23 +126,18 @@ function renderLevelLetters(){
     });
 };
 
-
-// CHECK IF WORD IS IN WORD BANK
 function checkCorrectWord() {
     return levelWords.includes(guessedWord);
 };
 
-// CHECK IF WORD NOT ALREADY GUESSED
 function wordNotAlreadyGuessed() {
     return !userGuesses.includes(guessedWord);
 };
 
-// CHECK IF ALL LETTER BOXES ARE FILLED
 function allLettersFilled(guess){
         return guess.length === guessedWord.length;
 }; 
 
-// JOIN USER INPUT LETTERS INTO WORD STRING
 function joinLetters($guessedLetters) {
     $guessedLetters.each(function() {
         guessedWord += this.value;
@@ -204,9 +206,14 @@ function stopTimer() {
     }
 };
 
+function renderLoseMsg() {
+    loseMsg.insertAfter($('.jumbotron'));
+}
+
 function loseLevel() {
     stopTimer();
     outOfTime();
+    renderLoseMsg();
 }
 
 function checkWin(){
@@ -215,16 +222,23 @@ function checkWin(){
     }
 };
 
+function renderWinMsg() {
+    winMsg.insertAfter($('.jumbotron'));
+}
+
 function winLevel() {
     stopTimer();
     newGameBtnToStartBtn();
-    alert('So speedy! Congrats!');
+    renderWinMsg();
 };
 
 function resetUiInputs() {
     $('.card > .card-body > #letter-bank').empty();
     $('.card-group > .card > #guesses').empty();
     $('#guesses :input').prop('disabled', false);
+    $('h4').remove();
+    winMsg.remove();
+    loseMsg.remove();
 };
 
 /*----- initialization -----*/

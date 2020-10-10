@@ -79,7 +79,12 @@ p {
     color: red;
 }
 
-@keyframes appear {
-    0%  {opacity: 0;}
-    100% {opacity: 1;}
+.win-msg {
+    font-size: 3rem;
+    color: green;
+}
+
+.lose-msg {
+    font-size: 3rem;
+    color: red;
 }
